@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -83,12 +83,12 @@ class CustomerAcceptPage extends StatelessWidget {
         "driver_id": studentID,
         "isRequest": true,
       });
-     http.Response response =  await http.post(
+      http.Response response = await http.post(
         'https://prettiest-departmen.000webhostapp.com/notification.php',
         headers: {"Content-Type": "application/json"},
         body: jsonBody,
       );
-
+      Fluttertoast.showToast(msg: "You requested to join ride !");
       print('notification sent');
     }
 
@@ -184,13 +184,6 @@ class CustomerAcceptPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Text(
-                  //   'Trip Summary',
-                  //   style: TextStyle(
-                  //       color: Colors.blueGrey,
-                  //       fontWeight: FontWeight.bold,
-                  //       fontSize: 18),
-                  // ),
                   SizedBox(height: 15),
                   Row(
                     children: <Widget>[

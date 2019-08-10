@@ -217,9 +217,9 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     Widget offerTab() {
-      // while (loadOffer == true) {
+    
       _getOfferList();
-      // }
+      
 
       return ListView.builder(
         scrollDirection: Axis.vertical,
@@ -256,7 +256,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w300),
                               ),
-                              // SizedBox(width: 125),
                               Text(
                                 '${offerList[index]['_time']}    ',
                                 style: TextStyle(
@@ -272,9 +271,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           Row(
                             children: <Widget>[
-                              // SizedBox(
-                              //   width: 150,
-                              // ),
                               Icon(
                                 Icons.airline_seat_recline_extra,
                                 color: Colors.blueGrey[300],
@@ -290,9 +286,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 80,
                                 height: 25,
                                 child: FlatButton(
-                                    // elevation: 0,
-                                    // shape: RoundedRectangleBorder(
-                                    //     borderRadius: BorderRadius.circular(15)),
                                     child: Icon(
                                       Icons.delete,
                                       color: Colors.blueGrey[200],

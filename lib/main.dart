@@ -1,4 +1,3 @@
-import 'package:camcar_2/dAccept_page.dart';
 import 'package:camcar_2/editProfile_page.dart';
 import 'package:camcar_2/notification_page.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:camcar_2/cAccept_page.dart';
 import 'package:camcar_2/filterList_page.dart';
 import 'package:camcar_2/filter_page.dart';
 import 'package:camcar_2/login_page.dart';
-import 'package:camcar_2/notification_page.dart';
 import 'package:camcar_2/models/user_model.dart';
 import 'package:camcar_2/profile_page.dart';
 import 'package:camcar_2/home_page.dart';
@@ -47,10 +45,8 @@ class _MyAppState extends State<MyApp> {
     FilterListPage.tag: (context) => FilterListPage(),
     CustomerAcceptPage.tag: (context) => CustomerAcceptPage(),
     ProfilePage.tag: (context) => ProfilePage(),
-    // Message.tag: (context) => Message(),
     MyLoginPage.tag: (context) => MyLoginPage(),
     EditProfile.tag: (context) => EditProfile(),
-    DriverAccept.tag: (context) => DriverAccept(),
     NotificationPage.tag: (context) => NotificationPage(),
   };
   @override
@@ -70,7 +66,6 @@ class _MyAppState extends State<MyApp> {
     OneSignal.shared.setNotificationOpenedHandler((notification) {
       print('OpenedHandler opened?');
       navigateToPage(true);
-      // Navigator.of(context).pushNamed(DriverAccept.tag);
     });
 
     return MaterialApp(

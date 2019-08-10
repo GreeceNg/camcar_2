@@ -168,7 +168,6 @@ class _FilterPageState extends State<FilterPage> {
                       : (_pickUp != _desti)
                           ? _getFilterContent()
                           : _checkPoint();
-                  //_printFiltered;
                 },
               ),
             ),

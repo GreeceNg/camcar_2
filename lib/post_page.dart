@@ -30,8 +30,8 @@ class _PostPageState extends State<PostPage> {
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(
-          _now.year, _now.month, _now.day), // I set it to the current day
-      lastDate: DateTime.now().add(Duration(days: 7)), // 7 days ahead
+          _now.year, _now.month, _now.day),
+      lastDate: DateTime.now().add(Duration(days: 7)),
     );
 
     if (picked != null && picked != selectedDate) {

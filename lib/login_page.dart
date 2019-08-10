@@ -15,14 +15,12 @@ class MyLoginPage extends StatefulWidget {
 
 class _MyLoginPageState extends State<MyLoginPage> {
   final formKey = new GlobalKey<FormState>();
-  // bool loginState = false,
   bool _isPassEmpty = false, _isEmailEmpty = false;
 
   Map<String, dynamic> userData;
   var data;
   TextEditingController _email = TextEditingController(text: 'nusrah');
   TextEditingController _password = TextEditingController(text: 'abc');
-  // var userModel = Provider.of<UserModel>(context);
 
   Future<void> _wrongEmailPassword() async {
     return showDialog<void>(

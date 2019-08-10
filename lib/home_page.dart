@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:camcar_2/message_page.dart';
 import 'package:camcar_2/models/user_model.dart';
 import 'package:camcar_2/notification_page.dart';
 import 'package:camcar_2/post_page.dart';
@@ -51,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => NotificationPage(getPending: _notificationList, )),
+          builder: (context) => NotificationPage(getPending: _notificationList, refreshNotification: _getNotification)),
     );
                   },
                 )
@@ -125,21 +124,6 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context).pushNamed(FilterPage.tag);
               },
             ),
-            // RaisedButton(
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(20)),
-            //   color: Colors.teal[100],
-            //   child: Text(
-            //     '\t\t\t\t\t\t Message \t\t\t\t\t\t',
-            //     style: TextStyle(
-            //         fontSize: 15,
-            //         color: Colors.blueGrey,
-            //         fontWeight: FontWeight.w300),
-            //   ),
-            //   onPressed: () {
-            //     Navigator.pushNamed(context, Message.tag);
-            //   },
-            // ),
           ]),
     );
   }

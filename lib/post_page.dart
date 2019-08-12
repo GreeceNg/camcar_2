@@ -29,8 +29,7 @@ class _PostPageState extends State<PostPage> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(
-          _now.year, _now.month, _now.day),
+      firstDate: DateTime(_now.year, _now.month, _now.day),
       lastDate: DateTime.now().add(Duration(days: 7)),
     );
 
@@ -139,11 +138,11 @@ class _PostPageState extends State<PostPage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Post?'),
+          title: Text('Exit Post?'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Do you sure want to delete post?'),
+                Text('Do you sure want to exit this page?'),
               ],
             ),
           ),
@@ -170,11 +169,11 @@ class _PostPageState extends State<PostPage> {
     return showDialog(
             context: context,
             builder: (context) => new AlertDialog(
-                  title: Text('Delete Post?'),
+                  title: Text('Exit Post?'),
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
-                        Text('Do you sure want to delete post?'),
+                        Text('Do you sure want to exit this page?'),
                       ],
                     ),
                   ),
@@ -216,12 +215,12 @@ class _PostPageState extends State<PostPage> {
           elevation: 0,
         ),
         body: ListView(
+          padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: 25),
                 Icon(
                   Icons.edit_location,
                   size: 110,
@@ -324,33 +323,60 @@ class _PostPageState extends State<PostPage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 100, right: 100),
-                  child: RaisedButton(
-                    color: Colors.blueGrey,
-                    child: Text(
-                      'Post',
-                      style: TextStyle(color: Colors.white),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0,130,0,0),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {
-                      setState(() {
-                        if (_pickUp != _destination) {
-                          _storePost(student_id);
-                          Fluttertoast.showToast(
-                              msg: "You just offered a ride !");
-                          Navigator.of(context).pushNamed(HomePage.tag);
-                        } else {
-                          _checkPoint();
-                        }
-                      });
-                    },
-                  ),
+                    RaisedButton(
+                      padding: EdgeInsets.only(left: 60, right: 60),
+                      color: Colors.blueGrey,
+                      child: Text(
+                        'Post',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      onPressed: () {
+                        setState(() {
+                          if (_pickUp != _destination) {
+                            _storePost(student_id);
+                            Fluttertoast.showToast(
+                                msg: "You just offered a ride !");
+                            Navigator.of(context).pushNamed(HomePage.tag);
+                          } else {
+                            _checkPoint();
+                          }
+                        });
+                      },
+                    ),
+                  ],
                 ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 100, right: 100),
+                //   child: RaisedButton(
+                //     color: Colors.blueGrey,
+                //     child: Text(
+                //       'Post',
+                //       style: TextStyle(color: Colors.white),
+                //     ),
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(20)),
+                //     onPressed: () {
+                //       setState(() {
+                //         if (_pickUp != _destination) {
+                //           _storePost(student_id);
+                //           Fluttertoast.showToast(
+                //               msg: "You just offered a ride !");
+                //           Navigator.of(context).pushNamed(HomePage.tag);
+                //         } else {
+                //           _checkPoint();
+                //         }
+                //       });
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ],

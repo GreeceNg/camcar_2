@@ -32,14 +32,14 @@ class _HomePageState extends State<HomePage> {
     }
 
     _getNotification();
-    
 
     return Material(
       color: Colors.blueGrey,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
+          //mainAxisAlignment: MainAxisAlignment.center,
+          //mainAxisSize: MainAxisSize.max,
           children: [
+            Padding(padding: EdgeInsets.all(15),),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -48,16 +48,19 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   onPressed: () {
                     Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => NotificationPage(getPending: _notificationList, refreshNotification: _getNotification)),
-    );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NotificationPage(
+                              getPending: _notificationList,
+                              refreshNotification: _getNotification)),
+                    );
                   },
                 )
               ],
             ),
+            Padding(padding: EdgeInsets.all(25),),
             Image.asset(
-              'assets/icon.png',
+              'assets/logo.png',
               width: 80,
             ),
             Text(
@@ -65,11 +68,12 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                  //color: Colors.lightGreen[100]
+                  //color: Colors.white,
+                  color: Colors.teal[100],
+                  ),
             ),
-            SizedBox(
-              height: 90,
-            ),
+            Padding(padding: EdgeInsets.all(30),),
             GestureDetector(
               child: CircleAvatar(
                 backgroundImage: AssetImage('assets/person.png'),
@@ -79,21 +83,23 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context).pushNamed(ProfilePage.tag);
               },
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            Padding(padding: EdgeInsets.all(5),),
             GestureDetector(
               child: Text(
                 '${userData.firstName} ${userData.lastName}',
-                style: TextStyle(fontSize: 15, color: Colors.white),
+                style: TextStyle(fontSize: 15, color: Colors.teal[100],),
               ),
               onTap: () {
                 Navigator.of(context).pushNamed(ProfilePage.tag);
               },
             ),
-            SizedBox(
-              height: 90,
-            ),
+            // SizedBox(
+            //   height: 90,
+            // ),
+            Padding(padding: EdgeInsets.all(45),),
             RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),

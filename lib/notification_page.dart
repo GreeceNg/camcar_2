@@ -15,21 +15,28 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
+  bool accept;
+
   @override
   Widget build(BuildContext context) {
-    void _acceptRequest(index) async {
+    void _replyRequest(index) async {
       String requestID = widget.getPending[index]['request_id'];
       http.Response response = await http.get(
-        'https://prettiest-departmen.000webhostapp.com/acceptRequest.php?request_id=$requestID',
+        'https://prettiest-departmen.000webhostapp.com/replyRequest.php?request_id=$requestID&accept=$accept',
       );
       Map result = jsonDecode(response.body);
-      if (result['success'] == true) {
+      if (result['message'] == "Successfully accepted request!") {
         Fluttertoast.showToast(msg: "Successfully accepted request!");
         setState(() {
           widget.getPending.removeAt(index);
         });
-      } else {
-        Fluttertoast.showToast(msg: "Trip is already full");
+      } else if(result['message'] == "Successfully rejected request!"){
+        Fluttertoast.showToast(msg: "Successfully reject request!");
+        setState(() {
+          widget.getPending.removeAt(index);
+        });
+      } else{
+        Fluttertoast.showToast(msg: "Trip already full");
         setState(() {
           widget.getPending.removeAt(index);
         });
@@ -55,30 +62,49 @@ class _NotificationPageState extends State<NotificationPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Request Ride\t'),
+                  // Text('Request for Ride', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  // Padding(padding: EdgeInsets.all(5),),
                   Text(
-                      '${widget.getPending[index]['firstName']} ${widget.getPending[index]['lastName']} wants to join your ride'),
+                    '${widget.getPending[index]['firstName']} ${widget.getPending[index]['lastName']} wants to join your ride!',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                  Padding(padding: EdgeInsets.all(2),),
                   Text(
-                      'Pick up - destination : ${widget.getPending[index]['pickup']} - ${widget.getPending[index]['destination']}'),
+                      'Pick up -> Destination : ${widget.getPending[index]['pickup']} -> ${widget.getPending[index]['destination']}',
+                      style: TextStyle(fontSize: 15),
+                      ),
+                  Padding(padding: EdgeInsets.all(2),),
+                  // Text(
+                  //     'Seat(s) available          : ${widget.getPending[index]['seatNo']}',
+                  //     style: TextStyle(fontSize: 15),
+                  //     ),
+                  Padding(padding: EdgeInsets.all(2),),
                   Text(
-                      'Number of seats available ${widget.getPending[index]['seatNo']}'),
-                  Text('Date and time : ${widget.getPending[index]['_time']}'),
+                    'Date & time                   : ${widget.getPending[index]['_time']}', 
+                    style: TextStyle(fontSize: 15),
+                    ),
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
                         child: Text('Accept'),
+                        color: Colors.blueGrey[100],
                         onPressed: () {
                           setState(() {
-                            _acceptRequest(index);
+                            accept = true;
+                            _replyRequest(index);
                           });
                         },
                       ),
                       SizedBox(width: 20),
                       RaisedButton(
                         child: Text('Reject'),
-                        onPressed: () {},
+                        color: Colors.blueGrey[100],
+                        onPressed: () {
+                          accept = false;
+                          _replyRequest(index);
+                        },
                       ),
                     ],
                   ),

@@ -18,18 +18,18 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String pickup, destination, seatNo, time;
   List offerList = List();
+  List acceptList = List();
   List deletedPost = List();
-  bool loadOffer = true;
 
   @override
   Widget build(BuildContext context) {
     var userData = Provider.of<UserModel>(context).user;
-    String student_id = userData.studentID;
-    Size screenSize = MediaQuery.of(context).size;
-    double barHeight = screenSize.height / 1.9;
+    String studentID = userData.studentID;
+    // Size screenSize = MediaQuery.of(context).size;
+    // double barHeight = screenSize.height / 2.13;
 
     void _getOfferList() async {
-      String jsonBody = jsonEncode({"student_id": student_id});
+      String jsonBody = jsonEncode({"student_id": studentID});
       http.Response response = await http.post(
         'https://prettiest-departmen.000webhostapp.com/getOffer.php',
         body: jsonBody,
@@ -39,14 +39,24 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         offerList = json.decode(response.body);
       });
-      print("filtered content : ");
-      print(offerList);
-      loadOffer = false;
+    }
+
+    void _getAcceptList() async {
+      http.Response response = await http.post(
+        'https://prettiest-departmen.000webhostapp.com/getJoinedRides.php?student_id=$studentID',
+      );
+
+      if (!mounted) return;
+      setState(() {
+        acceptList = json.decode(response.body);
+      });
+      print("Accepted content : ");
+      print(acceptList);
     }
 
     void _deleteOffer(pickup, destination, seatNo, time) async {
       String jsonBody = jsonEncode({
-        "student_id": student_id,
+        "student_id": studentID,
         "pickup": pickup,
         "destination": destination,
         "seatNo": seatNo,
@@ -58,8 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    Future<void> _confirmDelete(
-        pickup, destination, seatNo, time) async {
+    Future<void> _confirmDelete(pickup, destination, seatNo, time) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -110,117 +119,170 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     }
 
-    Widget _buildCoverImage(Size screenSize, context) {
-      return Container(
-        child: Container(
-          padding: EdgeInsets.only(top: 25),
-          alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.black38,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(HomePage.tag);
-                  }),
-              PopupMenuButton<int>(
-                  itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 1,
-                          child: Text("Log Out"),
-                        ),
-                      ],
-                  onSelected: (value) async {
-                    (value == 1) ? logout() : null;
-                    var status =
-                        await OneSignal.shared.getPermissionSubscriptionState();
-                    // Send a request to delete the device_token entry
-                    http.get(
-                      'https://prettiest-departmen.000webhostapp.com/logout.php?device_token=${status.subscriptionStatus.userId}',
-                    );
-                    // Navigate back out
-                    Navigator.pop(context);
-                  }),
-            ],
-          ),
-        ),
-        height: screenSize.height / 4.5,
-        decoration: BoxDecoration(color: Colors.blueGrey),
-      );
-    }
-
-    Widget _buildProfileImage() {
-      return Container(
-        padding: EdgeInsets.only(left: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/person.png'),
-                radius: 35,
+    Widget _buildCoverImage() {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
               ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  border: Border.all(width: 5, color: Colors.white)),
+              onPressed: () {
+                Navigator.of(context).pushNamed(HomePage.tag);
+              }),
+          title: Text('Profile'),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 35, right: 10),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                child: GestureDetector(
-                  child: Text("Edit Profile"),
-                  onTap: () {
-                    Navigator.pushNamed(context, EditProfile.tag);
-                  },
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  border: Border.all(width: 2, color: Colors.grey[300]),
-                ),
-              ),
-            ),
+            PopupMenuButton<int>(
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text("Log Out"),
+                      ),
+                    ],
+                onSelected: (value) async {
+                  (value == 1) ? logout() : null;
+                  var status =
+                      await OneSignal.shared.getPermissionSubscriptionState();
+                  // Send a request to delete the device_token entry
+                  http.get(
+                    'https://prettiest-departmen.000webhostapp.com/logout.php?device_token=${status.subscriptionStatus.userId}',
+                  );
+                  // Navigate back out
+                  Navigator.pop(context);
+                }),
           ],
         ),
       );
     }
 
-    Widget _buildDetails() {
+    Widget _buildProfileImage() {
       var userData = Provider.of<UserModel>(context).user;
-      String student_id = userData.studentID;
+      // String student_id = userData.studentID;
 
       return Container(
-        padding: EdgeInsets.only(left: 15, top: 5),
-        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 15),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              '${userData.firstName} ${userData.lastName}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          children: [
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage('assets/person.png'),
+                            radius: 40,
+                          ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                  width: 5, color: Colors.blueGrey[100])),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                        ),
+                        Container(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 15),
+                            child: GestureDetector(
+                              child: Text("Edit Profile"),
+                              onTap: () {
+                                Navigator.pushNamed(context, EditProfile.tag);
+                              },
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border:
+                                  Border.all(width: 2, color: Colors.grey[300]),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 35),
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 25),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              '${userData.firstName} ${userData.lastName}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(2),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              '$studentID',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(2),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Plate Number : ${userData.carPlate}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(2),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Car Type : ${userData.carType}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(2),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Car Color : ${userData.carColor}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              '${userData.studentID}',
-              style: TextStyle(fontSize: 12),
-            ),
-            SizedBox(height: 15),
-            Text('Plate Number : ${userData.carPlate}'),
-            Text('Car Type : ${userData.carType}'),
-            Text('Car Color : ${userData.carColor}'),
-            SizedBox(height: 18)
           ],
         ),
       );
     }
 
     Widget offerTab() {
-    
       _getOfferList();
-      
-
       return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: offerList.length,
@@ -234,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       padding: EdgeInsets.all(10),
                       child: CircleAvatar(
-                        backgroundImage: AssetImage('assets/fish.jpg'),
+                        backgroundImage: AssetImage('assets/person.png'),
                         radius: 20,
                       ),
                     ),
@@ -244,10 +306,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           SizedBox(height: 5),
-                          Text(
-                            offerList[index]['student_id'],
-                            style: TextStyle(fontSize: 12),
-                          ),
+                          // Text(
+                          //   offerList[index]['student_id'],
+                          //   style: TextStyle(fontSize: 12),
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -292,10 +354,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     onPressed: () {
                                       _confirmDelete(
-                                          offerList[index]['pickup'],
-                                          offerList[index]['destination'],                                                                                                                                                                         
-                                          offerList[index]['seatNo'],
-                                          offerList[index]['_time'],);
+                                        offerList[index]['pickup'],
+                                        offerList[index]['destination'],
+                                        offerList[index]['seatNo'],
+                                        offerList[index]['_time'],
+                                      );
                                     }),
                               ),
                             ],
@@ -319,20 +382,113 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
+    Widget acceptTab() {
+      _getAcceptList();
+      return ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: acceptList.length,
+        itemBuilder: (context, int index) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage('assets/person.png'),
+                        radius: 20,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          //Padding(padding: EdgeInsets.only(top: 10, bottom: 10),),
+                          //SizedBox(height: 5),
+                          Text(
+                            '${acceptList[index]['driver_firstname']} ${acceptList[index]['driver_lastname']}, ${acceptList[index]['driver_id']}',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        '${acceptList[index]['pickup']} - ${acceptList[index]['destination']} ',
+                                        style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        '${acceptList[index]['_time']} \t',
+                                        style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    'Plate No \t : ${acceptList[index]['plate_number']}    ',
+                                    style: TextStyle(
+                                        color: Colors.blueGrey, fontSize: 15),
+                                  ),
+                                  Text(
+                                    'Car Type \t : ${acceptList[index]['type']}    ',
+                                    style: TextStyle(
+                                        color: Colors.blueGrey, fontSize: 15),
+                                  ),
+                                  Text(
+                                    'Car Color \t: ${acceptList[index]['color']}    ',
+                                    style: TextStyle(
+                                        color: Colors.blueGrey, fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                              Padding(padding: EdgeInsets.only(bottom: 5),),
+                            ],
+                          ),
+                      
+                      ),
+                    
+                  ],
+                ),
+                Container(
+                  height: 1,
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(barHeight),
+            preferredSize: Size.fromHeight(320),
             child: Stack(
               children: <Widget>[
-                _buildCoverImage(screenSize, context),
+                // _buildCoverImage(screenSize, context),
+                _buildCoverImage(),
                 Column(children: [
                   Column(
                     children: <Widget>[
-                      SizedBox(height: screenSize.height / 6),
+                      //SizedBox(height: screenSize.height / 7),
+                      Padding(
+                        padding: EdgeInsets.all(60),
+                      ),
                       _buildProfileImage(),
-                      _buildDetails(),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                      ),
+                      //_buildDetails(),
                     ],
                   ),
                   TabBar(
@@ -359,10 +515,7 @@ class _ProfilePageState extends State<ProfilePage> {
           body: TabBarView(
             children: <Widget>[
               offerTab(),
-              Container(
-                color: Colors.amber,
-                child: Text('Hello'),
-              ),
+              acceptTab(),
             ],
           )),
     );

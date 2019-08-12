@@ -8,7 +8,17 @@ import 'package:provider/provider.dart';
 import 'models/user_model.dart';
 
 class CustomerAcceptPage extends StatelessWidget {
-  final String pickup, destination, seatNo, time, studentID, postID;
+  final String pickup,
+      destination,
+      seatNo,
+      time,
+      studentID,
+      postID,
+      plateNo,
+      type,
+      color,
+      firstName,
+      lastName;
   int price;
 
   static String tag = 'customerAccept-page';
@@ -18,7 +28,12 @@ class CustomerAcceptPage extends StatelessWidget {
       this.seatNo,
       this.time,
       this.studentID,
-      this.postID});
+      this.postID,
+      this.plateNo,
+      this.type,
+      this.color,
+      this.firstName,
+      this.lastName});
 
   @override
   Widget build(BuildContext context) {
@@ -175,189 +190,273 @@ class CustomerAcceptPage extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ListView(children: [
-        Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(height: 15),
-                  Row(
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Date & Time',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '$time',
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.grey[400]),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 20),
-                      Container(
-                        height: 40,
-                        width: 1,
-                        color: Colors.grey[400],
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Seats',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '$seatNo',
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.grey[400]),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(height: 25),
-                      Container(
-                        height: 1,
-                        width: 320,
-                        color: Colors.grey[400],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Pick Up',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '$pickup',
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.grey[400]),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 30),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Destination',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '$destination',
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.grey[400]),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 20),
-                      Container(
-                        height: 40,
-                        width: 1,
-                        color: Colors.grey[400],
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Price',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'RM $price',
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.grey[400]),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(height: 25),
-                      Container(
-                        height: 1,
-                        width: 320,
-                        color: Colors.grey[400],
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Student Details',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            ' $studentID',
-                            style: TextStyle(
-                                fontSize: 25, color: Colors.grey[400]),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(height: 25),
-                          Container(
-                            height: 1,
-                            width: 320,
-                            color: Colors.grey[400],
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Car Details',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Plate: XXX\nType: XXX\nColor: XXX',
-                        style: TextStyle(fontSize: 25, color: Colors.grey[400]),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    alignment: Alignment.center,
-                    child: RaisedButton(
-                      color: Colors.blueGrey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Text(
-                        '\t\t\t\t\t\t\t\t\t\t\tJoin Trip\t\t\t\t\t\t\t\t\t\t\t',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        _confirmation();
-                      },
+      body: ListView(
+        children: [
+          Column(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.all(5),),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Pick Up Point',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '$pickup',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 70),
+                        Container(
+                          height: 40,
+                          width: 1,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              'Destination',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '$destination',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ]),
+                    Padding(padding: EdgeInsets.only(top: 5),),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(height: 25),
+                        Container(
+                          height: 1,
+                          width: 320,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Date & Time',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '$time',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.all(5),),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(height: 25),
+                        Container(
+                          height: 1,
+                          width: 320,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Seats',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '$seatNo',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Container(
+                          height: 40,
+                          width: 1,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(width: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Price',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'RM $price',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Container(
+                          height: 40,
+                          width: 1,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(width: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Student ID',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  '$studentID',
+                                  style: TextStyle(
+                                      fontSize: 25, color: Colors.grey[400]),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(height: 25),
+                        Container(
+                          height: 1,
+                          width: 320,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Name',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              '$firstName $lastName',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.all(5),),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(height: 25),
+                        Container(
+                          height: 1,
+                          width: 320,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Car Details',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Plate No  : $plateNo',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Car Type  : $type',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Car Color : $color',
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.grey[400]),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: RaisedButton(
+                        color: Colors.blueGrey,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          '\t\t\t\t\t\t\t\t\t\t\tJoin Trip\t\t\t\t\t\t\t\t\t\t\t',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _confirmation();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              )           
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

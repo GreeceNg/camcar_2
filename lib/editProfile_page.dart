@@ -53,37 +53,40 @@ class _EditProfileState extends State<EditProfile> {
           Center(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 40),
+                //SizedBox(height: 40),
+                Padding(padding: EdgeInsets.all(30),),
                 Container(
                   child: CircleAvatar(
                     backgroundImage: AssetImage('assets/person.png'),
                     radius: 50,
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  '${userData.studentID}',
-                  style: TextStyle(fontSize: 20),
-                ),
+                Padding(padding: EdgeInsets.all(5),),
                 Text(
                   '${userData.firstName} ${userData.lastName}',
+                  style: TextStyle(fontSize: 18),
+                ),
+                 Padding(padding: EdgeInsets.all(2),),
+                Text(
+                  '${userData.studentID}',
                   style: TextStyle(fontSize: 15),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 50),
+          Padding(padding: EdgeInsets.all(20),),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(width: 10),
+              //SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Plate Number :', style: TextStyle(fontSize: 18)),
+                  Text('Plate Number :', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 33),
-                  Text('Car Type     :', style: TextStyle(fontSize: 18)),
+                  Text('Car Type          :', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 33),
-                  Text('Car Color    :', style: TextStyle(fontSize: 18)),
+                  Text('Car Color         :', style: TextStyle(fontSize: 16)),
                 ],
               ),
               SizedBox(width: 10),
@@ -91,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
                 children: <Widget>[
                   Container(
                     width: 200,
-                    height: 40,
+                    height: 30,
                     child: TextFormField(
                       decoration: InputDecoration(
                         fillColor: Colors.white,
@@ -103,10 +106,10 @@ class _EditProfileState extends State<EditProfile> {
                       controller: plateNumber,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Container(
                     width: 200,
-                    height: 40,
+                    height: 30,
                     child: TextFormField(
                       decoration: InputDecoration(
                         fillColor: Colors.white,
@@ -118,10 +121,10 @@ class _EditProfileState extends State<EditProfile> {
                       controller: type,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Container(
                     width: 200,
-                    height: 40,
+                    height: 30,
                     child: TextFormField(
                       decoration: InputDecoration(
                         fillColor: Colors.white,
@@ -143,6 +146,7 @@ class _EditProfileState extends State<EditProfile> {
               Container(
                 child: RaisedButton(
                   child: Text('Save'),
+                  color: Colors.blueGrey[100],
                   onPressed: () {
                     _updateProfile();
                   },

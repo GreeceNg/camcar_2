@@ -93,6 +93,11 @@ class FilterListPage extends StatelessWidget {
                                           time: filterList[index]['_time'],
                                           studentID: filterList[index]['student_id'],
                                           postID: filterList[index]['post_id'],
+                                          plateNo: filterList[index]['plate_number'],
+                                          type: filterList[index]['type'],
+                                          color: filterList[index]['color'],
+                                          firstName: filterList[index]['firstName'],
+                                          lastName: filterList[index]['lastName'],
                                         ),),
                               );
                             },

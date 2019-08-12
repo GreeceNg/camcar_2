@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     _getNotification();
-    
 
     return Material(
       color: Colors.blueGrey,
@@ -48,10 +47,12 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   onPressed: () {
                     Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => NotificationPage(getPending: _notificationList, refreshNotification: _getNotification)),
-    );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NotificationPage(
+                              getPending: _notificationList,
+                              refreshNotification: _getNotification)),
+                    );
                   },
                 )
               ],

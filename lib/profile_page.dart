@@ -25,8 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     var userData = Provider.of<UserModel>(context).user;
     String studentID = userData.studentID;
-    // Size screenSize = MediaQuery.of(context).size;
-    // double barHeight = screenSize.height / 2.13;
 
     void _getOfferList() async {
       String jsonBody = jsonEncode({"student_id": studentID});
@@ -111,12 +109,10 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     void logout() async {
-      setState(() async {
-        Provider.of<UserModel>(context).isLoggedIn = false;
+        Provider.of<UserModel>(context, listen: false).isLoggedIn = false;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('loginState', false);
         prefs.remove('userJson');
-      });
     }
 
     Widget _buildCoverImage() {
@@ -282,7 +278,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     Widget offerTab() {
-      _getOfferList();
       return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: offerList.length,
@@ -383,7 +378,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     Widget acceptTab() {
-      _getAcceptList();
       return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: acceptList.length,
@@ -467,7 +461,11 @@ class _ProfilePageState extends State<ProfilePage> {
         },
       );
     }
+    
+      _getOfferList();
 
+      _getAcceptList();
+      
     return DefaultTabController(
       length: 2,
       child: Scaffold(

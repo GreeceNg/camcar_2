@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.w300),
               ),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed(PostPage.tag);
+                Navigator.of(context).pushNamed(PostPage.tag);
               },
             ),
             RaisedButton(

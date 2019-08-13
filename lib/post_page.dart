@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:camcar_2/main.dart';
 import 'package:camcar_2/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -150,7 +151,10 @@ class _PostPageState extends State<PostPage> {
             FlatButton(
               child: Text('Yes'),
               onPressed: () {
-                Navigator.of(context).pushNamed(HomePage.tag);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyAppRoot()),
+                );
               },
             ),
             FlatButton(
@@ -181,7 +185,10 @@ class _PostPageState extends State<PostPage> {
                     FlatButton(
                       child: Text('Yes'),
                       onPressed: () {
-                        Navigator.of(context).pushNamed(HomePage.tag);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyAppRoot()),
+                        );
                       },
                     ),
                     FlatButton(
@@ -327,7 +334,7 @@ class _PostPageState extends State<PostPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0,130,0,0),
+                      padding: EdgeInsets.fromLTRB(0, 130, 0, 0),
                     ),
                     RaisedButton(
                       padding: EdgeInsets.only(left: 60, right: 60),
@@ -344,7 +351,11 @@ class _PostPageState extends State<PostPage> {
                             _storePost(student_id);
                             Fluttertoast.showToast(
                                 msg: "You just offered a ride !");
-                            Navigator.of(context).pushNamed(HomePage.tag);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyAppRoot()),
+                            );
                           } else {
                             _checkPoint();
                           }

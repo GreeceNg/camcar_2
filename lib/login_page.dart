@@ -19,8 +19,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   Map<String, dynamic> userData;
   var data;
-  TextEditingController _email = TextEditingController(text: 'nusrah');
-  TextEditingController _password = TextEditingController(text: 'abc');
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
 
   Future<void> _wrongEmailPassword() async {
     return showDialog<void>(

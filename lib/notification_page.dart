@@ -15,23 +15,25 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  bool accept;
+  int accept;
 
   @override
   Widget build(BuildContext context) {
+    
     void _replyRequest(index) async {
       String requestID = widget.getPending[index]['request_id'];
       http.Response response = await http.get(
         'https://prettiest-departmen.000webhostapp.com/replyRequest.php?request_id=$requestID&accept=$accept',
       );
       Map result = jsonDecode(response.body);
-      if (result['message'] == "Successfully accepted request!") {
+      String message = result['message'];
+      if (message == "Successfully accepted request!") {
         Fluttertoast.showToast(msg: "Successfully accepted request!");
         print(accept);
         setState(() {
           widget.getPending.removeAt(index);
         });
-      } else if(result['message'] == "Successfully rejected request!"){
+      } else if(message == "Successfully rejected request!"){
         Fluttertoast.showToast(msg: "Successfully reject request!");
         print(accept);
         setState(() {
@@ -94,7 +96,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         color: Colors.blueGrey[100],
                         onPressed: () {
                           setState(() {
-                            accept = true;
+                            accept = 1;
                             _replyRequest(index);
                           });
                         },
@@ -104,7 +106,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         child: Text('Reject'),
                         color: Colors.blueGrey[100],
                         onPressed: () {
-                          accept = false;
+                          accept = 0;
                           _replyRequest(index);
                         },
                       ),

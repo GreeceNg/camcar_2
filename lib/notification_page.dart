@@ -27,11 +27,13 @@ class _NotificationPageState extends State<NotificationPage> {
       Map result = jsonDecode(response.body);
       if (result['message'] == "Successfully accepted request!") {
         Fluttertoast.showToast(msg: "Successfully accepted request!");
+        print(accept);
         setState(() {
           widget.getPending.removeAt(index);
         });
       } else if(result['message'] == "Successfully rejected request!"){
         Fluttertoast.showToast(msg: "Successfully reject request!");
+        print(accept);
         setState(() {
           widget.getPending.removeAt(index);
         });

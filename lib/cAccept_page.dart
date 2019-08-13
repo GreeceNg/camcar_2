@@ -91,14 +91,14 @@ class CustomerAcceptPage extends StatelessWidget {
       );
     }
 
+    var userModel = Provider.of<UserModel>(context);
     void _sendNotification() async {
-      var userModel = Provider.of<UserModel>(context);
       String jsonBody = jsonEncode({
         "customer_id": userModel.user.studentID,
         "driver_id": studentID,
         "isRequest": true,
       });
-      http.Response response = await http.post(
+      await http.post(
         'https://prettiest-departmen.000webhostapp.com/notification.php',
         headers: {"Content-Type": "application/json"},
         body: jsonBody,
@@ -108,8 +108,8 @@ class CustomerAcceptPage extends StatelessWidget {
     }
 
     void _checkRequest(context) async {
-      String jsonBody =
-          jsonEncode({'post_id': postID, 'student_id': studentID});
+      String jsonBody = jsonEncode(
+          {'post_id': postID, 'student_id': userModel.user.studentID});
       http.Response response = await http.post(
         'https://prettiest-departmen.000webhostapp.com/postRequest.php',
         body: jsonBody,
@@ -194,7 +194,9 @@ class CustomerAcceptPage extends StatelessWidget {
         children: [
           Column(
             children: <Widget>[
-              Padding(padding: EdgeInsets.all(5),),
+              Padding(
+                padding: EdgeInsets.all(5),
+              ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 child: Column(
@@ -239,7 +241,9 @@ class CustomerAcceptPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.only(top: 5),),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
                     Row(
                       children: <Widget>[
                         SizedBox(height: 25),
@@ -269,7 +273,9 @@ class CustomerAcceptPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.all(5),),
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                    ),
                     Row(
                       children: <Widget>[
                         SizedBox(height: 25),
@@ -378,7 +384,9 @@ class CustomerAcceptPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.all(5),),
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                    ),
                     Row(
                       children: <Widget>[
                         SizedBox(height: 25),
@@ -452,7 +460,7 @@ class CustomerAcceptPage extends StatelessWidget {
                     )
                   ],
                 ),
-              )           
+              )
             ],
           ),
         ],

@@ -10,6 +10,9 @@ import 'models/user_model.dart';
 
 class ProfilePage extends StatefulWidget {
   static String tag = 'profile-page';
+  User user;
+
+  ProfilePage(this.user);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -22,35 +25,47 @@ class _ProfilePageState extends State<ProfilePage> {
   List deletedPost = List();
 
   @override
-  Widget build(BuildContext context) {
-    var userData = Provider.of<UserModel>(context).user;
-    String studentID = userData.studentID;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-    void _getOfferList() async {
-      String jsonBody = jsonEncode({"student_id": studentID});
-      http.Response response = await http.post(
-        'https://prettiest-departmen.000webhostapp.com/getOffer.php',
-        body: jsonBody,
-      );
+    _getOfferList();
 
-      if (!mounted) return;
-      setState(() {
-        offerList = json.decode(response.body);
-      });
-    }
+    _getAcceptList();
+  }
 
+  void _getOfferList() async {
+    String jsonBody = jsonEncode({"student_id": widget.user.studentID});
+    http.Response response = await http.post(
+      'https://prettiest-departmen.000webhostapp.com/getOffer.php',
+      body: jsonBody,
+    );
+
+    if (!mounted) return;
+    setState(() {
+      offerList = json.decode(response.body);
+    });
+  }
+  
     void _getAcceptList() async {
       http.Response response = await http.post(
-        'https://prettiest-departmen.000webhostapp.com/getJoinedRides.php?student_id=$studentID',
+        'https://prettiest-departmen.000webhostapp.com/getJoinedRides.php?student_id=' + widget.user.studentID,
       );
-
       if (!mounted) return;
       setState(() {
         acceptList = json.decode(response.body);
       });
+
       print("Accepted content : ");
       print(acceptList);
     }
+
+  @override
+  Widget build(BuildContext context) {
+    var userData = Provider.of<UserModel>(context).user;
+    String studentID = userData.studentID;
+
+    int incre = 0;
 
     void _deleteOffer(pickup, destination, seatNo, time) async {
       String jsonBody = jsonEncode({
@@ -109,10 +124,10 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     void logout() async {
-        Provider.of<UserModel>(context, listen: false).isLoggedIn = false;
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('loginState', false);
-        prefs.remove('userJson');
+      Provider.of<UserModel>(context, listen: false).isLoggedIn = false;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('loginState', false);
+      prefs.remove('userJson');
     }
 
     Widget _buildCoverImage() {
@@ -213,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           children: <Widget>[
                             Text(
-                              '${userData.firstName} ${userData.lastName}',
+                              '${widget.user.firstName} ${userData.lastName}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
@@ -409,46 +424,45 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        '${acceptList[index]['pickup']} - ${acceptList[index]['destination']} ',
-                                        style: TextStyle(
-                                            color: Colors.blueGrey,
-                                            fontSize: 16),
-                                      ),
-                                      Text(
-                                        '${acceptList[index]['_time']} \t',
-                                        style: TextStyle(
-                                            color: Colors.blueGrey,
-                                            fontSize: 16),
-                                      ),
-                                    ],
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    '${acceptList[index]['pickup']} - ${acceptList[index]['destination']} ',
+                                    style: TextStyle(
+                                        color: Colors.blueGrey, fontSize: 16),
                                   ),
                                   Text(
-                                    'Plate No \t : ${acceptList[index]['plate_number']}    ',
+                                    '${acceptList[index]['_time']} \t',
                                     style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 15),
-                                  ),
-                                  Text(
-                                    'Car Type \t : ${acceptList[index]['type']}    ',
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 15),
-                                  ),
-                                  Text(
-                                    'Car Color \t: ${acceptList[index]['color']}    ',
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 15),
+                                        color: Colors.blueGrey, fontSize: 16),
                                   ),
                                 ],
                               ),
-                              Padding(padding: EdgeInsets.only(bottom: 5),),
+                              Text(
+                                'Plate No \t : ${acceptList[index]['plate_number']}    ',
+                                style: TextStyle(
+                                    color: Colors.blueGrey, fontSize: 15),
+                              ),
+                              Text(
+                                'Car Type \t : ${acceptList[index]['type']}    ',
+                                style: TextStyle(
+                                    color: Colors.blueGrey, fontSize: 15),
+                              ),
+                              Text(
+                                'Car Color \t: ${acceptList[index]['color']}    ',
+                                style: TextStyle(
+                                    color: Colors.blueGrey, fontSize: 15),
+                              ),
                             ],
                           ),
-                      
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                          ),
+                        ],
                       ),
-                    
+                    ),
                   ],
                 ),
                 Container(
@@ -461,11 +475,9 @@ class _ProfilePageState extends State<ProfilePage> {
         },
       );
     }
-    
-      _getOfferList();
 
-      _getAcceptList();
-      
+    print('count : $incre');
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(

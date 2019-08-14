@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'models/user_model.dart';
 
 class EditProfile extends StatefulWidget {
@@ -36,8 +37,18 @@ class _EditProfileState extends State<EditProfile> {
       Map result = jsonDecode(response.body);
       if (result['success'] == true) {
         Fluttertoast.showToast(msg: "Profile Update success");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        Map userMap = jsonDecode(await prefs.getString("userJson"));
+        userMap['plate_number'] = plateNumber.text;
+        userMap['color'] = color.text;
+        userMap['type'] = type.text;
+        // print('Before storing: ' + jsonEncode(userMap));
+        await prefs.setString('userJson', jsonEncode(userMap));
+        userData.carPlate = plateNumber.text;
+        userData.carColor = color.text;
+        userData.carType = type.text;
         Navigator.pop(context);
-      } else{
+      } else {
         Fluttertoast.showToast(msg: "Profile fail to update");
       }
     }
@@ -54,19 +65,25 @@ class _EditProfileState extends State<EditProfile> {
             child: Column(
               children: <Widget>[
                 //SizedBox(height: 40),
-                Padding(padding: EdgeInsets.all(30),),
+                Padding(
+                  padding: EdgeInsets.all(30),
+                ),
                 Container(
                   child: CircleAvatar(
                     backgroundImage: AssetImage('assets/person.png'),
                     radius: 50,
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(5),),
+                Padding(
+                  padding: EdgeInsets.all(5),
+                ),
                 Text(
                   '${userData.firstName} ${userData.lastName}',
                   style: TextStyle(fontSize: 18),
                 ),
-                 Padding(padding: EdgeInsets.all(2),),
+                Padding(
+                  padding: EdgeInsets.all(2),
+                ),
                 Text(
                   '${userData.studentID}',
                   style: TextStyle(fontSize: 15),
@@ -74,7 +91,9 @@ class _EditProfileState extends State<EditProfile> {
               ],
             ),
           ),
-          Padding(padding: EdgeInsets.all(20),),
+          Padding(
+            padding: EdgeInsets.all(20),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

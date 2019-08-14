@@ -32,9 +32,9 @@ class User {
   final String lastName;
   final String email;
   final String studentID;
-  final String carType;
-  final String carColor;
-  final String carPlate;
+  String carType;
+  String carColor;
+  String carPlate;
 
   User.fromJson(Map<String, dynamic> jsonMap)
       : firstName = jsonMap['firstName'],

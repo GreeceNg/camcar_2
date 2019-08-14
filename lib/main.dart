@@ -19,6 +19,7 @@ void main() async {
   bool _isInitiallyLoggedIn = (prefs.getBool('loginState') ?? false);
   User _initalUser;
   String _userJson = prefs.getString('userJson');
+  print('INITIAL GET USER: $_userJson');
   if (_userJson != null) {
     Map userMap = jsonDecode(_userJson);
     _initalUser = User.fromJson(userMap);
@@ -44,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     FilterPage.tag: (context) => FilterPage(),
     FilterListPage.tag: (context) => FilterListPage(),
     CustomerAcceptPage.tag: (context) => CustomerAcceptPage(),
-    ProfilePage.tag: (context) => ProfilePage(),
+    ProfilePage.tag: (context) => ProfilePage(Provider.of<UserModel>(context).user),
     MyLoginPage.tag: (context) => MyLoginPage(),
     EditProfile.tag: (context) => EditProfile(),
     NotificationPage.tag: (context) => NotificationPage(),
